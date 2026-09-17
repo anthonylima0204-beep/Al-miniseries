@@ -6,92 +6,182 @@
         <span class="logo-text">MINISERIES</span>
       </div>
 
-      <button class="profile">👤</button>
+      <button class="profile" @click="activePage = 'profile'">
+        👤
+      </button>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-content">
-          <span class="badge">🎬 AL MINISERIES</span>
+      <!-- INICIO -->
+      <template v-if="activePage === 'home'">
+        <section class="hero">
+          <div class="hero-content">
+            <span class="badge">🎬 AL MINISERIES</span>
 
-          <h1>Historias que<br />te atrapan.</h1>
+            <h1>Historias que<br />te atrapan.</h1>
 
+            <p>
+              Descubre miniseries, historias originales y contenido creado
+              para disfrutar capítulo tras capítulo.
+            </p>
+
+            <button class="primary-button" @click="activePage = 'explore'">
+              ▶ Comenzar a ver
+            </button>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title">
+            <h2>🔥 Destacadas</h2>
+
+            <button class="see-all" @click="activePage = 'explore'">
+              Ver todas ›
+            </button>
+          </div>
+
+          <div class="series-grid">
+            <button class="card card-one" @click="selectSeries('Próximamente')">
+              <div class="card-overlay">
+                <small>MINISERIE</small>
+                <h3>Próximamente</h3>
+              </div>
+            </button>
+
+            <button class="card card-two" @click="selectSeries('Una nueva historia')">
+              <div class="card-overlay">
+                <small>ORIGINAL AL</small>
+                <h3>Una nueva historia</h3>
+              </div>
+            </button>
+
+            <button class="card card-three" @click="selectSeries('Muy pronto')">
+              <div class="card-overlay">
+                <small>ESTRENO</small>
+                <h3>Muy pronto</h3>
+              </div>
+            </button>
+          </div>
+
+          <p v-if="selectedSeries" class="selected-message">
+            Has seleccionado: {{ selectedSeries }}
+          </p>
+        </section>
+
+        <section class="section categories">
+          <h2>Explora</h2>
+
+          <div class="category-grid">
+            <button @click="activePage = 'explore'">🎭 Drama</button>
+            <button @click="activePage = 'explore'">❤️ Romance</button>
+            <button @click="activePage = 'explore'">😂 Comedia</button>
+            <button @click="activePage = 'explore'">🔪 Suspenso</button>
+          </div>
+        </section>
+      </template>
+
+      <!-- EXPLORAR -->
+      <section v-else-if="activePage === 'explore'" class="page-section">
+        <h1>Explorar</h1>
+        <p class="page-description">
+          Descubre nuevas historias y próximas miniseries de AL MINISERIES.
+        </p>
+
+        <div class="explore-card">
+          <span>🎬</span>
+          <div>
+            <h2>Catálogo próximamente</h2>
+            <p>
+              Aquí aparecerán tus miniseries cuando conectemos la plataforma
+              con la base de datos.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MI LISTA -->
+      <section v-else-if="activePage === 'list'" class="page-section">
+        <h1>Mi lista</h1>
+        <p class="page-description">
+          Guarda tus miniseries favoritas en un solo lugar.
+        </p>
+
+        <div class="empty-state">
+          <span>＋</span>
+          <h2>Tu lista está vacía</h2>
           <p>
-            Descubre miniseries, historias originales y contenido creado
-            para disfrutar capítulo tras capítulo.
+            Cuando guardes una miniserie, aparecerá aquí.
           </p>
 
-          <button class="primary-button">
-            ▶ Comenzar a ver
+          <button class="primary-button" @click="activePage = 'explore'">
+            Explorar contenido
           </button>
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-title">
-          <h2>🔥 Destacadas</h2>
-          <span>Ver todas ›</span>
+      <!-- PERFIL -->
+      <section v-else-if="activePage === 'profile'" class="page-section">
+        <div class="profile-heading">
+          <div class="large-avatar">👤</div>
+          <h1>Anthony Lima</h1>
+          <p>Mi perfil de AL MINISERIES</p>
         </div>
 
-        <div class="series-grid">
-          <article class="card card-one">
-            <div class="card-overlay">
-              <small>MINISERIE</small>
-              <h3>Próximamente</h3>
-            </div>
-          </article>
-
-          <article class="card card-two">
-            <div class="card-overlay">
-              <small>ORIGINAL AL</small>
-              <h3>Una nueva historia</h3>
-            </div>
-          </article>
-
-          <article class="card card-three">
-            <div class="card-overlay">
-              <small>ESTRENO</small>
-              <h3>Muy pronto</h3>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section categories">
-        <h2>Explora</h2>
-
-        <div class="category-grid">
-          <button>🎭 Drama</button>
-          <button>❤️ Romance</button>
-          <button>😂 Comedia</button>
-          <button>🔪 Suspenso</button>
+        <div class="profile-options">
+          <button>⚙️ Configuración</button>
+          <button>🌐 Idioma</button>
+          <button>🎞️ Calidad de reproducción</button>
         </div>
       </section>
     </main>
 
+    <!-- NAVEGACIÓN INFERIOR -->
     <nav class="bottom-nav">
-      <button class="active">
+      <button
+        :class="{ active: activePage === 'home' }"
+        @click="activePage = 'home'"
+      >
         <span>⌂</span>
         Inicio
       </button>
 
-      <button>
+      <button
+        :class="{ active: activePage === 'explore' }"
+        @click="activePage = 'explore'"
+      >
         <span>🔎</span>
         Explorar
       </button>
 
-      <button>
+      <button
+        :class="{ active: activePage === 'list' }"
+        @click="activePage = 'list'"
+      >
         <span>＋</span>
         Mi lista
       </button>
 
-      <button>
+      <button
+        :class="{ active: activePage === 'profile' }"
+        @click="activePage = 'profile'"
+      >
         <span>👤</span>
         Perfil
       </button>
     </nav>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const activePage = ref('home')
+const selectedSeries = ref('')
+
+function selectSeries(seriesName) {
+  selectedSeries.value = seriesName
+}
+</script>
 
 <style>
 * {
@@ -152,6 +242,10 @@ button {
   border-radius: 50%;
   background: #1b1b1b;
   font-size: 18px;
+}
+
+main {
+  min-height: calc(100vh - 145px);
 }
 
 .hero {
@@ -221,9 +315,10 @@ button {
   font-size: 21px;
 }
 
-.section-title span {
-  font-size: 13px;
+.see-all {
+  background: transparent;
   color: #aaa;
+  font-size: 13px;
 }
 
 .series-grid {
@@ -238,6 +333,8 @@ button {
   overflow: hidden;
   position: relative;
   background: linear-gradient(145deg, #32104a, #111);
+  text-align: left;
+  padding: 0;
 }
 
 .card-two {
@@ -266,6 +363,12 @@ button {
   margin-top: 4px;
 }
 
+.selected-message {
+  margin-top: 15px;
+  color: #bbb;
+  font-size: 13px;
+}
+
 .categories {
   padding-bottom: 20px;
 }
@@ -281,6 +384,105 @@ button {
   padding: 16px;
   border-radius: 10px;
   background: #171717;
+  text-align: left;
+  font-size: 14px;
+}
+
+.page-section {
+  padding: 35px 22px;
+}
+
+.page-section h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+}
+
+.page-description {
+  color: #aaa;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.explore-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #171717;
+}
+
+.explore-card > span {
+  font-size: 35px;
+}
+
+.explore-card h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.explore-card p,
+.empty-state p {
+  color: #aaa;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #111;
+  border-radius: 15px;
+}
+
+.empty-state > span {
+  display: block;
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.empty-state h2 {
+  margin-bottom: 10px;
+}
+
+.empty-state .primary-button {
+  margin-top: 25px;
+}
+
+.profile-heading {
+  text-align: center;
+  padding: 20px 0 30px;
+}
+
+.large-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85px;
+  height: 85px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #242424;
+  font-size: 35px;
+}
+
+.profile-heading h1 {
+  margin-bottom: 8px;
+}
+
+.profile-heading p {
+  color: #aaa;
+}
+
+.profile-options {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-options button {
+  background: #171717;
+  border-radius: 10px;
+  padding: 18px;
   text-align: left;
   font-size: 14px;
 }
